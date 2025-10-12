@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Inicio from "./Inicio.jsx";
-import Contacto from "./Contactos.jsx";
+import Contacto from "./Contacto.jsx";
 import DetalleProducto from "./DetalleProducto.jsx";
 import Admin from "./Admin.jsx"
 import Login from "./Login.jsx"
