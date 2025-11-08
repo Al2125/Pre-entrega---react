@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const EditarProducto = ({productoSeleccionado}) => {
+const EditarProducto = ({productoSeleccionado, actualizarLista}) => {
 
     const [producto, setProducto] = useState(productoSeleccionado || {
         nombre: '',
@@ -36,6 +36,7 @@ const EditarProducto = ({productoSeleccionado}) => {
 
             //onActualizar(datosActualizados);
             alert("Productos actualizados con éxito");
+            actualizarLista()
         } catch(error) {
             console.error(error.message);
             alert("Error al actualizar el producto")

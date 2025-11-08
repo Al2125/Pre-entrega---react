@@ -1,5 +1,6 @@
+import { act } from "react"
 import { useState } from "react"
-const FormProducto = () => {
+const FormProducto = ({actualizarLista}) => {
     const [errores, setErrores] = useState({})
     const [producto, setProducto] = useState({
         nombre: '',
@@ -39,11 +40,11 @@ const FormProducto = () => {
                         body: JSON.stringify(producto),
                         }
                     );
-                    if (!respuesta.ok) {
+                    if (!respuesta.ok && respuesta.status !== 200 && respuesta.status !== 201) {
                         throw new Error("Error al guardar el producto");
                     }
                     const productoCreado = await respuesta.json();
-                    onAgregar(producto)
+                    
                     //Reseteamos formulario y errores
                     setProducto( {
                     nombre: '',
@@ -52,6 +53,7 @@ const FormProducto = () => {
                     descripcion: ''
                 });
                 setErrores({})
+                 actualizarLista()
                 }
                 catch (error) {
                     console.error(error);
