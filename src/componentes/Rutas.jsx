@@ -1,23 +1,28 @@
 import { useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import Inicio from "./Inicio.jsx";
 import Contacto from "./Contacto.jsx";
 import DetalleProducto from "./DetalleProducto.jsx";
 import Admin from "./Admin.jsx"
 import Login from "./Login.jsx"
 import RutaProtegida from './RutaProtegida.jsx';
+import { useAuthContext } from '../context/AuthContext.jsx';
+
+
 
 function Rutas() {
-  const [estaAutenticado, setEstaAutenticado] = useState(false)
-  const iniciarSesion = () => setEstaAutenticado(true);
-  const cerrarSesion = () => setEstaAutenticado(false);
+  const { usuario, logout } = useAuthContext();
+    const navigate = useNavigate();
+  const iniciarSesion = () => navigate("/login");
+  //const cerrarSesion = () => setUsuario(null);
+
     
 
   return (
     <>
     {
-        estaAutenticado ? 
-        <button onClick={cerrarSesion}>Cerrar Sesión</button> :
+        usuario ? 
+        <button onClick={logout}>Cerrar Sesión</button> :
         <button onClick={iniciarSesion}>Iniciar Sesión</button>
       }
     <Routes>
@@ -25,7 +30,7 @@ function Rutas() {
       <Route path={'/contacto'} element={<Contacto />} />
       <Route path={'/producto/:id'} element={<DetalleProducto />} />
       <Route path={'/admin'} element={
-        <RutaProtegida estaAutenticado={estaAutenticado}>
+        <RutaProtegida estaAutenticado={!usuario}>
           <Admin />
         </RutaProtegida>
         }

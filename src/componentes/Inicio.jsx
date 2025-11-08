@@ -1,27 +1,29 @@
+import { useContext, useEffect } from "react";
 import ListaProductos from "./listaProductos";
-import { useState , useEffect} from 'react'
 import Carrito from "./Carrito";
+import { CarritoContext } from "../context/CarritoContext.jsx";
 
 const Inicio = () => {
-    const [carrito, setCarrito] = useState(() => {
-        const carritoGuardado = localStorage.getItem("carrito");
-        return carritoGuardado ? JSON.parse(carritoGuardado) : [];
-    });
+  const { carrito, agregarCarrito, vaciarCarrito, setCarrito } = useContext(CarritoContext);
 
-    const agregarCarrito = (producto) => {
-        setCarrito([...carrito, producto])
+  useEffect(() => {
+    const carritoGuardado = localStorage.getItem("carrito");
+    if (carritoGuardado) {
+      setCarrito(JSON.parse(carritoGuardado));
     }
-    const vaciarCarrito = () => {
-        setCarrito([])
-    }
-    useEffect (() => {
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-    }, [carrito]);
-    return (
-        <>
-        <ListaProductos agregarCarrito={agregarCarrito} />
-        <Carrito carrito={carrito} vaciarCarrito={vaciarCarrito} />
-        </>
-    )
-}
-export default Inicio
+  }, [setCarrito]);
+
+
+  useEffect(() => {
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+  }, [carrito]);
+
+  return (
+    <>
+      <ListaProductos agregarCarrito={agregarCarrito} />
+      <Carrito carrito={carrito} vaciarCarrito={vaciarCarrito} />
+    </>
+  );
+};
+
+export default Inicio;

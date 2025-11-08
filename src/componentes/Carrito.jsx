@@ -1,6 +1,9 @@
+import { useContext } from "react"
+import {CarritoContext} from "../context/CarritoContext.jsx"
 
 
-const Carrito = ({carrito, vaciarCarrito}) => {
+const Carrito = () => {
+    const {carrito, eliminarDelCarrito, vaciarCarrito} = useContext(CarritoContext);
 if (carrito.length == 0){
     return (
         <>

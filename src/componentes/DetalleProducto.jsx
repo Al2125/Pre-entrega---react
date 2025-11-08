@@ -8,7 +8,7 @@ const DetalleProducto = () => {
     const [producto, setProducto] = useState(null)
 
     useEffect( () => {
-        fetch(`https://fakestoreapi.com/products/${id}`)
+        fetch(`https://690f6e0e45e65ab24ac3cdab.mockapi.io/productos/${id}`)
         .then((respuesta) => respuesta.json())
         .then((dato) => setProducto(dato))
         .catch((error) => console.error("Error al cargar el producto: ", error));
@@ -22,16 +22,16 @@ const DetalleProducto = () => {
         //<h2>Este es el producto N°: {id}</h2>
         <>
         <div class="detalleProducto">
-            <h2>{producto.title}</h2>
+            <h2>{producto.nombre}</h2>
             <img
-                src={producto.image}
-                alt={producto.title}
+                src={producto.imagen}
+                alt={producto.nombre}
                 width={150}
                 height={150}
             />
-            <p>{producto.description}</p>
+            <p>{producto.descripcion}</p>
             <p>
-                <strong>Precio:</strong> ${producto.price}
+                <strong>Precio:</strong> ${producto.precio}
             </p>
         </div>
         <Link to={`/`}><button>Volver</button></Link>
