@@ -38,8 +38,8 @@ const GestionProductos = ({ formularioAbierto }) => {
             <button onClick={abrirFormularioAgregar}>Agregar producto</button>
 
             {mostrarFormulario && (
-                <div className="modal-fondo">
-                    <div className="modal-contenido">
+                <div className="modal">
+                    <div className="modal-formulario">
                         <FormProducto
                             modo={modoFormulario}
                             producto={productoSeleccionado}

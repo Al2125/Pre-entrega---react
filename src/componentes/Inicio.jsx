@@ -20,7 +20,7 @@ const Inicio = () => {
 
   return (
     <>
-      <GestionProductos />
+
       <ListaProductos agregarCarrito={agregarCarrito} />
       <Carrito carrito={carrito} vaciarCarrito={vaciarCarrito} />
     </>

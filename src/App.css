@@ -15,7 +15,13 @@ header {
   width: 100%;
   text-align: center;
 }
+.nav-bar {
+  display: flex;
+  gap:10px;
 
+  padding:1%;
+  color: black
+}
 .detalleProducto {
   display: flex;
   flex-direction: column;
@@ -53,4 +59,49 @@ color: black
   margin-top: 10px;
   padding: 6px;
   border: 1px solid black
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-formulario {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    padding: 20px;
+    border: 3px solid black;
+    border-radius: 8px;
+    min-width: 300px;
+    color: black;
+    gap: 15px;
+}
+.modal-formulario input,
+.modal-formulario textarea {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    font-size: 14px;
+  
+}
+
+.modal-formulario textarea {
+    height: 80px;
+}
+
+
+
+.modal-formulario button {
+    width: 40%;
+    cursor: pointer;
+}
+
+.modal-formulario button:hover {
+    background: #504e4e;
 }

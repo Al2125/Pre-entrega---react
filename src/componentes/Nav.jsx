@@ -5,15 +5,14 @@ const Nav  = () => {
     const {usuario} = useAuthContext();
     const esAdmin = usuario == 'admin'
     return (
-        <nav>
-            <ul>
-                <li>
+        <nav class="nav-bar">
+            
+                
                 <Link to={'/'}>Inicio</Link>
+                
                 <Link to={'/contacto'}>Contacto</Link>
-                {esAdmin &&
-                <Link to={'admin'}>Admin</Link>}
-                </li>
-            </ul>
+                
+            
         </nav>
     )
 }

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useAuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom'
+import Inicio from "./Inicio";
 
 const Login = () => {
     const [usuario,setUsuario] = useState('')
@@ -15,7 +16,7 @@ const manejarSubmit = (evento) => {
     evento.preventDefault()
     if(usuario == 'admin' && contrasenia == '1234') {
         login(usuario);
-        navigate('/admin');
+        navigate('/');
     } else {
         alert('Usuario o contraseña inválido')
     }

@@ -4,10 +4,12 @@ import { useContext } from "react";
 import { CarritoContext } from "../context/CarritoContext.jsx";
 import { useProductosContext } from "../context/ProductosContext.jsx";
 import GestionProductos from "./GestionProductos.jsx";
+import { useAuthContext } from "../context/AuthContext.jsx";
 
 const ListaProductos = () => {
   const { agregarCarrito } = useContext(CarritoContext);
   const { productos, cargando, eliminarProducto } = useProductosContext();
+  const { usuario } = useAuthContext();
 
   const [paginaActual, setPaginaActual] = useState(1);
   const productosPorPagina = 5;
@@ -25,7 +27,9 @@ const ListaProductos = () => {
 
   return (
     <>
-      <GestionProductos formularioAbierto={setAbrirFormularioEditar} />
+      {usuario === "admin" && (
+        <GestionProductos formularioAbierto={setAbrirFormularioEditar} />
+      )}
 
       <div>
         <h2>Productos</h2>
@@ -46,11 +50,12 @@ const ListaProductos = () => {
 
               <button onClick={() => agregarCarrito(producto)}>Agregar</button>
 
-              <button onClick={() => abrirFormularioEditar?.(producto)}>
-                Editar
-              </button>
-
-              <button onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
+              {usuario === "admin" && (
+                <>
+                  <button onClick={() => abrirFormularioEditar?.(producto)}>Editar</button>
+                  <button onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
+                </>
+              )}
 
               <Link to={`/producto/${producto.id}`}>
                 <button>Ver detalle</button>
