@@ -1,124 +1,131 @@
-import { act } from "react"
-import { useState } from "react"
-const FormProducto = ({actualizarLista}) => {
-    const [errores, setErrores] = useState({})
-    const [producto, setProducto] = useState({
-        nombre: '',
-        precio: '',
-        imagen: '',
-        descripcion: ''
-     })
-     const manejarChange = (evento) => {
-        const {name, value} = evento.target;
-        setProducto({...producto, [name]: value})
-     }
-     const validarForm = () => {
-        const nuevosErrores = {};
+import { useState, useEffect } from "react";
 
-    if (!producto.nombre.trim())
+const FormProducto = ({ modo, producto, onAgregar, onEditar, onCerrar }) => {
+  const [errores, setErrores] = useState({});
+  const [datosProducto, setdatosProducto] = useState({
+    nombre: "",
+    precio: "",
+    imagen: "",
+    descripcion: "",
+  });
+
+  useEffect(() => {
+    if (modo === "editar" && producto) {
+      setdatosProducto({
+        nombre: producto.nombre,
+        precio: producto.precio,
+        descripcion: producto.descripcion,
+        imagen: producto.imagen,
+        id: producto.id, // necesario para PUT
+      });
+    } else {
+      setdatosProducto({
+        nombre: "",
+        precio: "",
+        imagen: "",
+        descripcion: "",
+      });
+    }
+  }, [modo, producto]);
+
+  const manejarChange = (evento) => {
+    const { name, value } = evento.target;
+
+    setdatosProducto({
+      ...datosProducto,
+      [name]: name === "precio" ? Number(value) : value,
+    });
+  };
+
+  const validarForm = () => {
+    const nuevosErrores = {};
+
+    if (!datosProducto.nombre.trim())
       nuevosErrores.nombre = "El nombre es obligatorio";
 
-    if (!producto.precio || producto.precio <= 0)
+    if (!datosProducto.precio || datosProducto.precio <= 0)
       nuevosErrores.precio = "El precio debe ser mayor a 0";
 
-    if (!producto.imagen.trim() || producto.imagen.length < 6)
+    if (!datosProducto.imagen.trim() || datosProducto.imagen.length < 6)
       nuevosErrores.imagen = "Debe subir una URL de imagen válida";
 
-    if (!producto.descripcion.trim() || producto.descripcion.length < 10)
+    if (!datosProducto.descripcion.trim() || datosProducto.descripcion.length < 10)
       nuevosErrores.descripcion =
         "La descripción debe tener al menos 10 caracteres";
-        setErrores(nuevosErrores);
-        return Object.keys(nuevosErrores).length === 0;
-            }
-        const manejarSubmit = async (evento) => {
-            evento.preventDefault();
-            if (validarForm()) {
-                try{
-                    const respuesta = await fetch("https://690f6e0e45e65ab24ac3cdab.mockapi.io/productos",
-                        {method: "POST",
-                        headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify(producto),
-                        }
-                    );
-                    if (!respuesta.ok && respuesta.status !== 200 && respuesta.status !== 201) {
-                        throw new Error("Error al guardar el producto");
-                    }
-                    const productoCreado = await respuesta.json();
-                    
-                    //Reseteamos formulario y errores
-                    setProducto( {
-                    nombre: '',
-                    precio: '',
-                    imagen: '',
-                    descripcion: ''
-                });
-                setErrores({})
-                 actualizarLista()
-                }
-                catch (error) {
-                    console.error(error);
-                    alert("Error al guardar el producto")
-                }
-                
-                
-                
-            }
 
-        };
+    setErrores(nuevosErrores);
 
+    return Object.keys(nuevosErrores).length === 0;
+  };
 
-    return(
-        <form onSubmit={manejarSubmit}>
-            <h2>Agregar producto</h2>
+  const manejarSubmit = (evento) => {
+    evento.preventDefault();
 
-            <div>
-                <label>Nombre:</label>
-                <input
-                type="text"
-                name="nombre"
-                value={producto.nombre}
-                onChange={manejarChange}
-                />
-                {errores.nombre && <p style={{ color: "red" }}>{errores.nombre}</p>}
-            </div>
+    if (!validarForm()) return;
 
-            <div>
-                <label>Precio:</label>
-                <input
-                type="number"
-                name="precio"
-                value={producto.precio}
-                onChange={manejarChange}
-                />
-                {errores.precio && <p style={{ color: "red" }}>{errores.precio}</p>}
-            </div>
+    if (modo === "agregar") {
+      onAgregar(datosProducto);
+    } else {
+      onEditar(datosProducto);
+    }
 
-            <div>
-                <label>URL de imagen:</label>
-                <input
-                type="text"
-                name="imagen"
-                value={producto.imagen}
-                onChange={manejarChange}
-                />
-                {errores.imagen && <p style={{ color: "red" }}>{errores.imagen}</p>}
-            </div>
+    onCerrar();
+  };
 
-            <div>
-                <label>Descripción:</label>
-                <textarea
-                name="descripcion"
-                value={producto.descripcion}
-                onChange={manejarChange}
-                />
-                {errores.descripcion && (
-                <p style={{ color: "red" }}>{errores.descripcion}</p>
-                )}
-            </div>
+  return (
+    <form onSubmit={manejarSubmit}>
+      <h2>{modo === "agregar" ? "Agregar producto" : "Editar producto"}</h2>
 
-            <button type="submit">Agregar</button>
-            </form>
-        );
-    
-}
-export default FormProducto
+      <div>
+        <label>Nombre:</label>
+        <input
+          type="text"
+          name="nombre"
+          value={datosProducto.nombre}
+          onChange={manejarChange}
+        />
+        {errores.nombre && <p style={{ color: "red" }}>{errores.nombre}</p>}
+      </div>
+
+      <div>
+        <label>Precio:</label>
+        <input
+          type="number"
+          name="precio"
+          value={datosProducto.precio}
+          onChange={manejarChange}
+        />
+        {errores.precio && <p style={{ color: "red" }}>{errores.precio}</p>}
+      </div>
+
+      <div>
+        <label>URL de imagen:</label>
+        <input
+          type="text"
+          name="imagen"
+          value={datosProducto.imagen}
+          onChange={manejarChange}
+        />
+        {errores.imagen && <p style={{ color: "red" }}>{errores.imagen}</p>}
+      </div>
+
+      <div>
+        <label>Descripción:</label>
+        <textarea
+          name="descripcion"
+          value={datosProducto.descripcion}
+          onChange={manejarChange}
+        />
+        {errores.descripcion && (
+          <p style={{ color: "red" }}>{errores.descripcion}</p>
+        )}
+      </div>
+
+      <button type="submit">
+        {modo === "agregar" ? "Agregar" : "Guardar cambios"}
+      </button>
+    </form>
+  );
+};
+
+export default FormProducto;

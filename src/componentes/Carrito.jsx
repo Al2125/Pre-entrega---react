@@ -15,10 +15,13 @@ if (carrito.length == 0){
 return (
     <div>
         <h2>Carrito</h2>
-        <div class="productos-carrito">
+        <div className="productos-carrito">
             <ul>
                 {carrito.map(producto =>
-                <li key={producto.id}> {producto.title} : {producto.price}</li>
+                <li key={producto.id}> {producto.nombre} : {producto.precio}
+                <button onClick={eliminarDelCarrito}>Eliminar</button>
+                </li>
+                
             )}
             </ul>
             <button onClick={vaciarCarrito}>Vaciar carrito</button>
