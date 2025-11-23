@@ -32,34 +32,46 @@ const ListaProductos = () => {
       )}
 
       <div>
-        <h2>Productos</h2>
+        <h2 className="titulo-productos">Productos</h2>
 
         <div className="contenedor-productos">
           {productosActuales.map((producto) => (
-            <div className="tarjeta-producto" key={producto.id}>
-              <h3>{producto.nombre}</h3>
+            <div className="row tarjeta-producto" key={producto.id}>
 
-              <img
-                src={producto.imagen}
-                alt={producto.nombre}
-                width={100}
-                height={100}
-              />
+                    <div className="d-none d-md-block col-md-1 col-lg-2 col-xl-3 bg-dark"></div>
 
-              <p><strong>Precio:</strong> ${producto.precio}</p>
+              <div className="col producto">
+                <div className="info-producto">
+                <h3>{producto.nombre}</h3>
 
-              <button onClick={() => agregarCarrito(producto)}>Agregar</button>
+                <img
+                  src={producto.imagen}
+                  alt={producto.nombre}
+                  width={100}
+                  height={100}
+                />
 
-              {usuario === "admin" && (
-                <>
-                  <button onClick={() => abrirFormularioEditar?.(producto)}>Editar</button>
-                  <button onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
-                </>
-              )}
+                <p><strong>Precio:</strong> ${producto.precio}</p>
+                </div>
+                
+ 
+                <div className = "col botones-producto">
+                  <button onClick={() => agregarCarrito(producto)}>Agregar</button>
+
+                {usuario === "admin" && (
+                  <>
+                    <button onClick={() => abrirFormularioEditar?.(producto)}>Editar</button>
+                    <button onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
+                  </>
+                )}
 
               <Link to={`/producto/${producto.id}`}>
                 <button>Ver detalle</button>
               </Link>
+              </div>
+              </div>
+
+                     <div className="d-none d-md-block col-md-1 col-lg-2 col-xl-3 bg-dark"></div>
             </div>
           ))}
         </div>

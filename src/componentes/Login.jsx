@@ -13,20 +13,30 @@ const Login = () => {
 
 
 const manejarSubmit = (evento) => {
-    evento.preventDefault()
-    if(usuario == 'admin' && contrasenia == '1234') {
+    evento.preventDefault();
+
+    const usuariosValidos = (
+        (usuario === 'admin' && contrasenia === '1234') ||
+        (usuario === 'usuario' && contrasenia === '1234')
+    );
+
+    if (usuariosValidos) {
         login(usuario);
         navigate('/');
     } else {
-        alert('Usuario o contraseña inválido')
+        alert('Usuario o contraseña inválido');
     }
-}
+};
 
     return(
-        <>
+        <div className= "form-login">
     <h1>Login</h1>
     <form onSubmit={manejarSubmit}>
         <h3>Iniciar sesión</h3>
+        <div className = "usuarios-validos">
+            <p>Admin: Usuario: admin / Contraseña: 1234</p>
+            <p>Usuario común: Usuario: usuario / Contraseña: 1234</p>
+        </div>
         <label htmlFor=''>Usuario</label>
         <input 
         type='text'
@@ -41,7 +51,7 @@ const manejarSubmit = (evento) => {
         />
         <button type='submit'>Iniciar Sesión</button>
     </form>
-    </>
+    </div>
     )
 }
 export default Login

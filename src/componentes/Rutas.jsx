@@ -20,11 +20,7 @@ function Rutas() {
 
   return (
     <>
-    {
-        usuario ? 
-        <button onClick={logout}>Cerrar Sesión</button> :
-        <button onClick={iniciarSesion}>Iniciar Sesión</button>
-      }
+    
     <Routes>
       <Route path={'/'} element={<Inicio />} />
       <Route path={'/contacto'} element={<Contacto />} />

@@ -1,26 +1,46 @@
-import {createContext, useState} from 'react';
-
+import { createContext, useState } from 'react';
+import { useAuthContext } from "../context/AuthContext.jsx";
+import { useNavigate } from 'react-router-dom';
 export const CarritoContext = createContext();
-//recibir children como funcion, exportar el content y la funcion
-export function CarritoProvider ({children})
-{
+
+export function CarritoProvider({ children }) {
+
     const [carrito, setCarrito] = useState([]);
+    const { usuario } = useAuthContext();
+    const navigate = useNavigate()
 
-    const eliminarDelCarrito = (indice) => {
-        setCarrito(carrito.filter((__, i) => i !== indice));
-    }
+    // Eliminar por ID
+    const eliminarDelCarrito = (id) => {
+        setCarrito(prev => prev.filter(producto => producto.id !== id));
+    };
+
+    // Agregar producto
     const agregarCarrito = (producto) => {
-            setCarrito([...carrito, producto])
-        }
-        const vaciarCarrito = () => {
-            setCarrito([])
-        }
-    return  (
-    //datos, funciones o métodos necesarios en value
-    <CarritoContext.Provider value = {{carrito, setCarrito, eliminarDelCarrito, agregarCarrito, vaciarCarrito }}> 
-        {children}
-    </CarritoContext.Provider>
+        if (!usuario) {
+                navigate('/login');
+            }
+        else
+            {setCarrito(prev => [...prev, producto]);}
+    };
 
-)
+    // Vaciar carrito
+    const vaciarCarrito = () => {
+        setCarrito([]);
+    };
+
+    return (
+        <CarritoContext.Provider 
+            value={{ 
+                carrito, 
+                setCarrito, 
+                eliminarDelCarrito, 
+                agregarCarrito, 
+                vaciarCarrito 
+            }}
+        >
+            {children}
+        </CarritoContext.Provider>
+    );
 }
-export default CarritoProvider
+
+export default CarritoProvider;
